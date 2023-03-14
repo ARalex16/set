@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- <link rel="stylesheet" href="set.css"> -->
+    <title>Set</title>
+    <style>
+        *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+:root{
+    --white: white;
+    --red: red;
+    --green: green;
+    --bg1: #ECF2FF;
+    --bg2: #CAF0F8;
+    --bg3: #FFE5EC;
+    --bg4: #F7F1E5;
+    --bg5: #EAFDFC;
+    --bg6: #33b249;
+}
+body{
+    background-color: var(--bg1);
+}
+h2{
+    font-size: 25px;
+    text-align: center;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+#formSection{
+    width: 100vw;
+    height: max-content;
+    margin: auto;
+}
+.box{
+    width: 100%;
+    height: 100px;
+    margin-bottom: 10px;
+    position: relative;
+}
+.box label{
+    font-size: 20px;
+    font-weight: 600;
+    position: absolute;
+    top: 10px;
+    left: 15px;
+}
+.set{
+    width: 265px;
+    height: 40px;
+    background-color: var(--bg4);
+    text-align: center;
+    position: absolute;
+    right: 15px;
+}
+.inpSet{
+    width: 40%;
+    height: 35px;
+    background-color: var(--bg5);
+    text-align: center;
+    position: absolute;
+    left: 25px;
+    bottom: 0;
+}
+.btnSet{
+    width: 40%;
+    height: 40px;
+    color: var(--white);
+    font-size: 18px;
+    font-weight: 900;
+    background-color: var(--bg6);
+    border: 2px solid var(--bg6);
+    position: absolute;
+    right: 25px;
+    bottom: 0;
+    cursor: pointer;
+}
+.btnSet:hover{
+    color: var(--bg6);
+    background-color: var(--white);
+}
+#msg{
+    width: 100vw;
+    height: 20px;
+    font-size: 20px;
+    font-weight: 900;
+    color: red;
+    text-align: center;
+}
+#operators{
+    width: 100vw;
+    height: 50px;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    position: relative;
+}
+#addSet{
+    width: 40%;
+    height: 50px;
+    color: var(--white);
+    font-size: 18px;
+    font-weight: 900;
+    background-color: var(--bg6);
+    border: 2px solid var(--bg6);
+    position: absolute;
+    left: 20px;
+    cursor: pointer;
+}
+#addSet:hover{
+    color: var(--bg6);
+    background-color: var(--white);
+}
+#result{
+    width: 40%;
+    height: 50px;
+    color: var(--white);
+    font-size: 18px;
+    font-weight: 900;
+    background-color: var(--red);
+    border: 2px solid var(--red);
+    position: absolute;
+    right: 20px;
+    cursor: pointer;
+}
+#result:hover{
+    color: var(--red);
+    background-color: var(--white);
+}
+#resSection{
+    width: 95vw;
+    height: max-content;
+    background-color: var(--bg2);
+    border: 1px solid black;
+    margin: auto;
+    margin-bottom: 50px;
+    display: none;
+}
+#chartBox{
+    width: 90vw;
+    height: 180px;    
+    background-color: var(--bg3);
+    border: 1px solid black;
+    margin: auto;
+}
+#resSection #touchMsg{
+    color: white;
+    font-size: 15px;
+    background-color: red;
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+#ourResult{
+    width: 100%;
+    height: max-content;
+    border: 2px solid blue;
+    padding: 30px 5px 20px 10px;
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    grid-column-gap: 10px;
+    grid-row-gap: 10px;
+}
+#ourResult div{
+    display: flex;
+}
+#ourResult div p{
+    max-width: 180px;
+    color: crimson;
+    padding-left: 5px;
+    overflow-x: scroll;
+}
+
+        
+    </style>
+</head>
+<body>
+    <h2>Set</h2>
+    
+    <div id="formSection">
+        <div class="box">
+            <label>Set A</label>
+            <input class="set" id="setATxt" type="text" placeholder="Set A" readonly>
+            <input class="inpSet" id="setAInp" type="text" placeholder="Set A">
+            <button class="btnSet" onclick="addSetA()">Add Set</button>
+        </div>
+        
+        <div class="box">
+            <label>Set B</label>
+            <input class="set" id="setBTxt" type="text" placeholder="Set B" readonly>
+            <input class="inpSet" id="setBInp" type="text" placeholder="Set B">
+            <button class="btnSet" onclick="addSetB()">Add Set</button>
+        </div>
+    </div>
+    
+    <div id="msg"></div>
+    <div id="operators">
+        <button id="addSet">Add Set</button>
+        <button id="result">Result</button>
+    </div>
+    
+    <!-- Result -->
+    <div id="resSection">
+        <div id="chartBox"></div>
+        <p id="touchMsg"><b><i>Touch</i></b> or <b><i>Hover</i></b> on <b>Diagram</b></p>
+        <h2>Result</h2>
+        <div id="ourResult" title="Results">
+                <!-- A & B
+            <div><b>AuB : </b> <p>${AuB}</p></div>
+            <div><b>n(AuB) : </b> <p>${nAuB}</p></div>
+            <div><b>AnB : </b> <p>${AnB}</p></div>
+            <div><b>n(AnB) : </b> <p>${nAnB}</p></div>
+            <div><b>A-B : </b> <p>${AminusB}</p></div>
+            <div><b>n(A-B) : </b> <p>${nAminusB}</p></div>
+            <div><b>B-A : </b> <p>${BminusA}</p></div>
+            <div><b>n(B-A) : </b> <p>${nBminusA}</p></div>
+
+                B & C 
+            <div><b>BuC : </b> <p>${BuC}</p></div>
+            <div><b>n(BuC) : </b> <p>${nBuC}</p></div>
+            <div><b>BnC : </b> <p>${BnC}</p></div>
+            <div><b>n(BnC) : </b> <p>${nBnC}</p></div>
+            <div><b>B-C : </b> <p>${BminusC}</p></div>
+            <div><b>n(B-C) : </b> <p>${nBminusC}</p></div>
+            <div><b>C-B : </b> <p>${CminusB}</p></div>
+            <div><b>n(C-B) : </b> <p>${nCminusB}</p></div>
+
+                A & C
+            <div><b>AuC : </b> <p>${AuC}</p></div>
+            <div><b>n(AuC) : </b> <p>${nAuC}</p></div>
+            <div><b>AnC : </b> <p>${AnC}</p></div>
+            <div><b>n(AnC) : </b> <p>${nAnC}</p></div>
+            <div><b>A-C : </b> <p>${AminusC}</p></div>
+            <div><b>n(A-C) : </b> <p>${nAminusC}</p></div>
+            <div><b>C-A : </b> <p>${CminusA}</p></div>
+            <div><b>n(C-A) : </b> <p>${nCminusA}</p></div>
+
+                A & B & C
+            <div><b>AuBuC : </b> <p>${AuBuC}</p></div>
+            <div><b>n(AuBuC) : </b> <p>${nAnBnC}</p></div>
+            <div><b>AnBnC : </b> <p>${AnBnC}</p></div>
+            <div><b>n(AnBnC) : </b> <p>${nAnBnC}</p></div> -->
+        </div>
+    </div>
+    
+    <!-- Script -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/chartjs-chart-venn@3.6.0/build/index.umd.min.js"></script>
+    <!-- <script src="set.js"></script> -->
+    
+    <script>
+        let setA = [];
+let setB = [];
+let setC = [];
+
+let addSet = document.getElementById('addSet');
+let result = document.getElementById('result');
+let formSection = document.getElementById('formSection');
+let msg = document.querySelector('#msg');
+let setATxt = document.querySelector('#setATxt');
+let setAInp = document.querySelector('#setAInp');
+let setBTxt = document.querySelector('#setBTxt');
+let setBInp = document.querySelector('#setBInp');
+let chartBox = document.getElementById('chartBox');
+let data;
+let opt = false;
+let myArray = [
+            {
+                label : 'A',
+                values : setA
+            },
+            {
+                label : 'B',
+                values : setB
+            }];
+let num = 2;    
+
+function addSetA() {
+    if (setAInp.value != "") {
+       if (!setA.includes(setAInp.value)) {
+           setA.push(setAInp.value);
+           setATxt.value = setA;
+           setAInp.value = "";
+           msg.style.display = 'none';
+       }else{
+           setAInp.value = "";
+           msg.style.display = '';
+           msg.innerHTML = "Set can't contain two same elements!";
+       }
+    }else{
+        msg.style.display = '';
+        msg.innerHTML = "Invalid Input!";
+    }
+}
+
+function addSetB() {  
+    if (setBInp.value != "") {
+       if (!setB.includes(setBInp.value)) {
+           setB.push(setBInp.value);
+           setBTxt.value = setB;
+           setBInp.value = "";
+           msg.style.display = "none";
+       }else{
+           setBInp.value = "";
+           msg.innerHTML = "Set can't contain two same elements!";
+       }
+    }else{
+        msg.innerHTML = "Invalid Input!";
+    }
+}
+
+function addSetC() {
+    let setCTxt = document.querySelector('#setCTxt');
+    let setCInp = document.querySelector('#setCInp');
+    if (setCInp.value != "") {
+       if (!setC.includes(setCInp.value)) {
+           setC.push(setCInp.value);
+           setCTxt.value = setC;
+           setCInp.value = "";
+           msg.innerHTML = "";
+       }else{
+           setAInp.value = "";
+           msg.innerHTML = "Set can't contain two same elements!";
+       }
+    }else{
+        msg.innerHTML = "Invalid Input!";
+    }
+}
+
+// Add Set Event Listener
+const addNewSet = () => {
+    num++;
+    let htmlData = `
+        <div class="box">
+            <label>Set C</label>
+            <input class="set" id="setCTxt" type="text" placeholder="Set C" readonly>
+            <input class="inpSet" id="setCInp" type="text" placeholder="Set C">
+            <button class="btnSet" onclick="addSetC()">Add Set</button>
+        </div>
+    `; 
+    
+    formSection.insertAdjacentHTML('beforeend', htmlData);
+    addSet.style.display = 'none';
+    result.style.right = '100px';
+    opt = true;
+}
+
+addSet.addEventListener('click', addNewSet);
+
+
+const union = (arr1, arr2, arr3 = []) => {
+    return Array.from(new Set([...arr1, ...arr2, ...arr3]));
+};
+
+const intersection2 = (arr1, arr2) => {
+    return [...arr1].filter(x => arr2.includes(x));
+}
+
+const intersection3 = (arr1, arr2, arr3) => {
+    return [...arr1].filter(x => arr2.includes(x)).filter(y => arr3.includes(y));
+}
+
+const AminusBfunc = (arr1, arr2) => {
+    return arr1.filter(x => !arr2.includes(x))
+}
+
+const BminusAfunc = (arr1, arr2) => {
+    return arr2.filter(x => !arr1.includes(x))
+}
+
+let ourResult = document.getElementById('ourResult');
+let resultData;
+    // A & B
+let AuB;
+let nAuB;
+let AnB;
+let nAnB;
+let AminusB;
+let nAminusB;
+let BminusA;
+let nBminusA;
+
+    // B & C
+let BuC;
+let nBuC;
+let BnC;
+let nBnC;
+let BminusC;
+let nBminusC;
+let CminusB;
+let nCminusB;
+
+    // A & C
+let AuC;
+let nAuC;
+let AnC;
+let nAnC;
+let AminusC;
+let nAminusC;
+let CminusA;
+let nCminusA;
+
+    // A & B & C
+let AuBuC;
+let nAuBuC;
+let AnBnC;
+let nAnBnC;
+
+// Result Button Event Listener
+result.addEventListener('click', () => {
+
+    // For Diagram
+    const obj = {
+                label : 'C',
+                values : setC
+                };
+
+    if (opt) {       
+        myArray.push(obj);
+        opt = false;
+    }
+    
+    data = ChartVenn.extractSets(
+        myArray,
+        {
+          label : 'Venn-Diagram'
+        }
+        );
+    
+    const config = {
+      type: 'venn',
+      data,
+      options: {
+        borderWidth : 1,
+        backgroundColor: [
+          'rgba(255, 26, 104, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+          'rgba(0, 0, 0, 0.2)'
+        ],
+        borderColor: [
+          'rgba(255, 26, 104, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+          'rgba(0, 0, 0, 1)'
+        ]
+      }
+    };
+    
+    while (chartBox.hasChildNodes()) {
+        chartBox.removeChild(chartBox.firstChild);
+    }
+    let myChart = document.createElement('canvas');
+    myChart.setAttribute('id', 'myChart');
+    
+    new Chart(myChart,config);
+    resSection.style.display = 'block';
+    
+    chartBox.appendChild(myChart);
+    
+    
+    // For Result
+        // A & B
+    AuB = union(setA, setB);
+    nAuB = AuB.length;
+    AnB = intersection2(setA, setB);
+    nAnB = AnB.length;
+    if(num == 3){
+        AnBnC = intersection3(setA, setB, setC);
+        nAnBnC = AnBnC.length;
+    }
+    AminusB = AminusBfunc(setA, setB);
+    nAminusB = AminusB.length;
+    BminusA = BminusAfunc(setA, setB);
+    nBminusA = BminusA.length;
+
+        // A & B & C
+    AuBuC = union(setA, setB, setC);
+    nAuBuC = AuBuC.length; 
+
+    if (num == 3) {
+        // B & C
+        BuC = union(setB, setC);
+        nBuC = BuC.length;
+        BnC = intersection2(setB, setC);
+        nBnC = BnC.length;
+        BminusC = AminusBfunc(setB, setC);
+        nBminusC = BminusC.length;
+        CminusB = BminusAfunc(setB, setC);
+        nCminusB = CminusB.length;
+
+        // A & C
+        AuC = union(setA, setC);
+        nAuC = AuC.length;
+        AnC = intersection2(setA, setC);
+        nAnC = AnC.length;
+        AminusC = AminusBfunc(setA, setC);
+        nAminusC = AminusC.length;
+        CminusA = BminusAfunc(setA, setC);
+        nCminusA = CminusA.length;
+    }
+
+    if (num == 2) {
+        resultData = `
+            <div><b>AuB : </b> <p>${AuB}</p></div>
+            <div><b>n(AuB) : </b> <p>${nAuB}</p></div>
+            <div><b>AnB : </b> <p>${AnB}</p></div>
+            <div><b>n(AnB) : </b> <p>${nAnB}</p></div>
+            <div><b>A-B : </b> <p>${AminusB}</p></div>
+            <div><b>n(A-B) : </b> <p>${nAminusB}</p></div>
+            <div><b>B-A : </b> <p>${BminusA}</p></div>
+            <div><b>n(B-A) : </b> <p>${nBminusA}</p></div>
+        `;
+    }else{
+        resultData = `
+            <div><b>AuB : </b> <p>${AuB}</p></div>
+            <div><b>n(AuB) : </b> <p>${nAuB}</p></div>
+            <div><b>AnB : </b> <p>${AnB}</p></div>
+            <div><b>n(AnB) : </b> <p>${nAnB}</p></div>
+            <div><b>A-B : </b> <p>${AminusB}</p></div>
+            <div><b>n(A-B) : </b> <p>${nAminusB}</p></div>
+            <div><b>B-A : </b> <p>${BminusA}</p></div>
+            <div><b>n(B-A) : </b> <p>${nBminusA}</p></div>
+
+            <div><b>BuC : </b> <p>${BuC}</p></div>
+            <div><b>n(BuC) : </b> <p>${nBuC}</p></div>
+            <div><b>BnC : </b> <p>${BnC}</p></div>
+            <div><b>n(BnC) : </b> <p>${nBnC}</p></div>
+            <div><b>B-C : </b> <p>${BminusC}</p></div>
+            <div><b>n(B-C) : </b> <p>${nBminusC}</p></div>
+            <div><b>C-B : </b> <p>${CminusB}</p></div>
+            <div><b>n(C-B) : </b> <p>${nCminusB}</p></div>
+
+            <div><b>AuC : </b> <p>${AuC}</p></div>
+            <div><b>n(AuC) : </b> <p>${nAuC}</p></div>
+            <div><b>AnC : </b> <p>${AnC}</p></div>
+            <div><b>n(AnC) : </b> <p>${nAnC}</p></div>
+            <div><b>A-C : </b> <p>${AminusC}</p></div>
+            <div><b>n(A-C) : </b> <p>${nAminusC}</p></div>
+            <div><b>C-A : </b> <p>${CminusA}</p></div>
+            <div><b>n(C-A) : </b> <p>${nCminusA}</p></div>
+
+            <div><b>AuBuC : </b> <p>${AuBuC}</p></div>
+            <div><b>n(AuBuC) : </b> <p>${nAnBnC}</p></div>
+            <div><b>AnBnC : </b> <p>${AnBnC}</p></div>
+            <div><b>n(AnBnC) : </b> <p>${nAnBnC}</p></div>
+        `
+    }
+
+    while (ourResult.hasChildNodes()) {
+        ourResult.removeChild(ourResult.firstChild);
+    }
+
+    ourResult.insertAdjacentHTML('beforeend', resultData);
+    console.log(num);
+});
+
+        
+    </script>
+</body>
+</html>
